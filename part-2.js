@@ -37,7 +37,7 @@ const initializeGame = (board) => {
         for(let i = row; i < row + shipSize; i++) {
           if(board[i][col] !== 0) {
             break;
-          } else if (i === row + shipSize -1) {
+          } else if (i === row + shipSize - 1) {
             validPlacement = true;
             for (let i = row; i < row + shipSize; i++) {
               board[i][col] = shipSize;
@@ -64,13 +64,13 @@ const initializeGame = (board) => {
   let guessedLocations = [];
 
   while (true) {
-    let location = rs.question("Enter a location to strike ie 'A2'").toUpperCase();
+    let location = rs.question("Enter a location to strike ie 'A2': ").toUpperCase();
 
     let row = location.charCodeAt(0) - 65;
     let col = Number(location.charAt(1)) - 1;
 
-    if (location.length !== 2 || isNaN(row) || isNaN(col)) {
-      console.log("Please enter a valid location in the format 'A2'.");
+    if (location.length !== 2 || isNaN(row) || isNaN(col) || row >= board.length || col >= board.length || col < 0) {
+      console.log(`Please enter a valid location in the format 'A1' to '${String.fromCharCode(board.length + 64)}${board.length}'.`);
       continue;
     }
 
