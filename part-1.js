@@ -1,8 +1,7 @@
 let rs = require('readline-sync');
-const prompt = require('prompt-sync')({signit: true});
 
 const startGame = () => {
-  prompt("Press any key to start the game.");
+  rs.keyIn("Press any key to start the game.");
   initializeGame();
 }
 
@@ -32,8 +31,8 @@ const initializeGame = () => {
     let row = location.charCodeAt(0) - 65;
     let col = Number(location.charAt(1)) - 1;
 
-    if (location.length !== 2 || isNaN(row) || isNaN(col)) {
-      console.log("Please enter a valid location in the format 'A2'.");
+    if (location.length !== 2 || isNaN(row) || isNaN(col) || row >= board.length || col >= board.length || col < 0) {
+      console.log(`Please enter a valid location in the format 'A1' to '${String.fromCharCode(board.length + 64)}${board.length}'.`);
       continue;
     }
 
@@ -50,10 +49,10 @@ const initializeGame = () => {
 
       if (numEnemyShips === 0) {
         console.log('You have won!');
-        let answer = prompt("You have destroyed all battleships. Would you like to play again? Y/N--");
-        if (answer.toLowerCase() === "y") {
-          initializeGame(prompt("Press any key to start the game."));
-        } else if (answer.toLowerCase() === "n") {
+        let answer = rs.keyInYN("You have destroyed all battleships. Would you like to play again? Y/N--");
+        if (answer) {
+          initializeGame(rs.keyIn("Press any key to start the game."));
+        } else if (answer === false) {
           process.exit();
         } else {
           console.log("Invalid input. Please enter 'y' or 'n'.");
