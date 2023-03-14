@@ -56,6 +56,7 @@ const initializeGame = () => {
           process.exit();
         } else {
           console.log("Invalid input. Please enter 'y' or 'n'.");
+          rs.keyInYN("You have destroyed all battleships. Would you like to play again? Y/N--");
         }
       }
     } else {

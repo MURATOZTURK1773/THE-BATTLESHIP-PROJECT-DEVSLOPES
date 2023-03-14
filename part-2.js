@@ -35,38 +35,25 @@ const initializeGame = (board) => {
    for (let ship of battleships) {
     let validPlacement = false;
     while (!validPlacement) {
-      let isVertical = Math.random() >= 0.5;
-      let row, col;
-      if (isVertical) {
-        row = Math.floor(Math.random() * (board.length - ship.size + 1));
-        col = Math.floor(Math.random() * board.length);
-        for(let i = row; i < row + ship.size; i++) {
-          if(board[i][col] !== '-') {
-            break;
-          } else if (i === row + ship.size - 1) {
-            validPlacement = true;
-            for (let i = row; i < row + ship.size; i++) {
-              board[i][col] = ship.id;
+        let isVertical = Math.random() >= 0.5;
+        let row = Math.floor(Math.random() * board.length);
+        let col = Math.floor(Math.random() * board.length);
+        for (let i = 0; i < ship.size; i++) {
+            let r = isVertical ? row + i : row;
+            let c = isVertical ? col : col + i;
+            if (r >= board.length || c >= board.length || board[r][c] !== '-') {
+                break;
             }
-          }
-        }
-      } else {
-        row = Math.floor(Math.random() * board.length);
-        col = Math.floor(Math.random() * (board.length - ship.size + 1));
-        for (let j = col; j < col + ship.size; j++) {
-          if (board[row][j] !== '-') {
-            break;
-          } else if (j === col + ship.size - 1) {
-            validPlacement = true;
-            for (let j = col; j < col + ship.size; j++) {
-              board[row][j] = ship.id;
+            if (i === ship.size - 1) {
+                validPlacement = true;
+                for (let j = 0; j < ship.size; j++) {
+                    board[isVertical ? row + j : row][isVertical ? col : col + j] = ship.id;
+                }
             }
-          }
         }
-      }
     }
   }
-
+  console.table(board);
   let guessedLocations = [];
   let gameOver = false;
 
@@ -80,7 +67,6 @@ const initializeGame = (board) => {
       console.log(`Please enter a valid location in the format 'A1' to '${String.fromCharCode(board.length + 64)}${board.length}'.`);
       continue;
     }
-    
     if (guessedLocations.includes(location)) {
       console.log('You have already picked this location. Miss!');
     } else {
@@ -116,9 +102,10 @@ const initializeGame = (board) => {
     initializeGame(buildGrid(10));  
   } else if (answer === false) {  
     process.exit();  
-  } else {  
-    console.log("Invalid input. Please enter 'y' or 'n'.");  
-  }    
+  } else {
+    console.log("Invalid input. Please enter 'y' or 'n'.");
+    rs.keyInYN("You have destroyed all battleships. Would you like to play again? Y/N--");
+  }
 }
 
 startGame();
