@@ -53,7 +53,7 @@ const initializeGame = (board) => {
         }
     }
   }
-  console.table(board);
+ 
   let guessedLocations = [];
   let gameOver = false;
 
